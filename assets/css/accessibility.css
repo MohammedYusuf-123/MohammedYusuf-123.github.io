@@ -192,3 +192,11 @@ html[data-theme=dark] .site-tools .tools-panel :is(button,a){background:transpar
 .intro-grid{align-items:start}.intro-grid>.eyebrow{font-family:"Segoe UI",Arial,sans-serif;font-size:calc(18px * var(--text-scale));font-weight:400;text-transform:none;letter-spacing:normal;line-height:1.8}
 
 .intro-grid>div p{font-size:calc(18px * var(--text-scale));line-height:1.8}
+
+.contact-dialog .contact-name{font-size:calc(22px * var(--text-scale));font-weight:600;line-height:1.5;margin:12px 0}
+.contact-dialog .contact-affiliation{color:var(--muted);margin-bottom:26px}
+.contact-dialog .contact-email-label{font-size:calc(14px * var(--text-scale));font-weight:600;margin-bottom:6px}
+.contact-dialog .contact-email{font-size:calc(20px * var(--text-scale));overflow-wrap:anywhere;user-select:all;line-height:1.6;margin-bottom:24px}
+.contact-dialog .contact-help{font-size:calc(14px * var(--text-scale));color:var(--muted);margin:22px 0 12px}
+.contact-dialog .contact-status{min-height:1.8em;margin:0;font-size:calc(16px * var(--text-scale))}
+.contact-dialog .button{border-radius:8px}

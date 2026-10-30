@@ -82,12 +82,21 @@
     const trigger = document.createElement('button');trigger.type='button';trigger.className='tools-trigger';
     trigger.innerHTML=icon('tools');trigger.title='Site tools';trigger.setAttribute('aria-label','Site tools');trigger.setAttribute('aria-expanded','false');trigger.setAttribute('aria-controls','site-tools-panel');
     const panel=document.createElement('div');panel.className='tools-panel';panel.id='site-tools-panel';panel.hidden=true;panel.setAttribute('role','group');panel.setAttribute('aria-label','Site tools');
-    const contact=document.createElement('a');contact.href='mailto:mmujawar@crimson.ua.edu';contact.className='tools-contact';contact.innerHTML=icon('email')+'<span>Email me</span>';
+    const contact=document.createElement('button');contact.type='button';contact.className='tools-contact';contact.innerHTML=icon('email')+'<span>Contact me</span>';
+    contact.setAttribute('aria-haspopup','dialog');contact.setAttribute('aria-controls','contact-details');contact.setAttribute('aria-expanded','false');
+    const contactDialog=document.createElement('dialog');contactDialog.id='contact-details';contactDialog.className='accessibility-dialog contact-dialog';contactDialog.setAttribute('aria-labelledby','contact-title');
+    contactDialog.innerHTML=`<div class="preferences-heading"><h2 id="contact-title">Contact me</h2><button class="preferences-close contact-close" type="button" aria-label="Close contact details">×</button></div>
+      <p class="contact-name">Mohammed Yusuf Mujawar</p><p class="contact-affiliation">Computer Science · The University of Alabama</p>
+      <p class="contact-email-label" id="contact-email-label">Email address</p><p class="contact-email" aria-labelledby="contact-email-label">mmujawar@crimson.ua.edu</p>
+      <div class="preferences-actions"><button type="button" class="button copy-email">Copy email</button><a class="button button-light" href="mailto:mmujawar@crimson.ua.edu">Open email app</a></div>
+      <p class="contact-help">You can paste the address into any email service. Opening an email app requires a configured email account on your device.</p><p class="contact-status" role="status" aria-live="polite"></p>`;
+    document.body.append(contactDialog);
+    const modalOpen=()=>dialog.open||contactDialog.open;
     panel.append(launcher,themeToggle,contact);tools.append(trigger,panel);document.body.append(tools);
     const backTop=document.createElement('button');backTop.type='button';backTop.className='scroll-top';backTop.setAttribute('aria-label','Back to top');backTop.title='Back to top';
     backTop.innerHTML='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 11 6-6 6 6M12 5v14"/></svg>';
     document.body.append(backTop);
-    const updateBackTop=()=>{backTop.hidden=window.scrollY<400||!panel.hidden;};
+    const updateBackTop=()=>{backTop.hidden=window.scrollY<400||!panel.hidden||modalOpen();};
     window.addEventListener('scroll',updateBackTop,{passive:true});updateBackTop();
     backTop.addEventListener('click',()=>{
       const reduced=settings.motion||matchMedia('(prefers-reduced-motion:reduce)').matches;
@@ -102,17 +111,25 @@
     trigger.addEventListener('click',()=>{clickOpen=!clickOpen;expand(clickOpen);});
     tools.addEventListener('mouseenter',()=>{if(matchMedia('(hover:hover) and (pointer:fine)').matches)expand(true);});
     tools.addEventListener('mouseleave',()=>{
-      if(dialog.open||(keyboardInput&&tools.contains(document.activeElement)))return;
+      if(modalOpen()||(keyboardInput&&tools.contains(document.activeElement)))return;
       if(panel.contains(document.activeElement))trigger.focus();
       expand(false);
     });
-    tools.addEventListener('focusout',()=>setTimeout(()=>{if(!tools.contains(document.activeElement)&&!dialog.open)expand(false);},0));
-    document.addEventListener('click',event=>{if(!event.composedPath().includes(tools)&&!event.composedPath().includes(dialog)&&!event.composedPath().includes(backTop)&&!dialog.open)expand(false);});
-    document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!dialog.open&&!panel.hidden){expand(false);trigger.focus();}});
+    tools.addEventListener('focusout',()=>setTimeout(()=>{if(!tools.contains(document.activeElement)&&!modalOpen())expand(false);},0));
+    document.addEventListener('click',event=>{if(!event.composedPath().includes(tools)&&!event.composedPath().includes(dialog)&&!event.composedPath().includes(backTop)&&!modalOpen())expand(false);});
+    document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!modalOpen()&&!panel.hidden){expand(false);trigger.focus();}});
     themeToggle.addEventListener('click',()=>{settings.theme=document.documentElement.dataset.theme==='dark'?'light':'dark';apply();save();synchronize();expand(true);themeToggle.focus();});
+    contact.addEventListener('click',()=>{contactDialog.querySelector('.contact-status').textContent='';contactDialog.showModal();expand(false);contact.setAttribute('aria-expanded','true');});
+    contactDialog.querySelector('.contact-close').addEventListener('click',()=>contactDialog.close());
+    contactDialog.addEventListener('close',()=>{expand(true);contact.setAttribute('aria-expanded','false');contact.focus();});
+    contactDialog.querySelector('.copy-email').addEventListener('click',async()=>{
+      const message=contactDialog.querySelector('.contact-status');
+      try{await navigator.clipboard.writeText('mmujawar@crimson.ua.edu');message.textContent='Email address copied.';}
+      catch(_){const range=document.createRange();range.selectNodeContents(contactDialog.querySelector('.contact-email'));const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);message.textContent='Select and copy the email address above.';}
+    });
     apply(); synchronize();
     launcher.addEventListener('click', () => {
-      status.textContent = ''; dialog.showModal(); launcher.setAttribute('aria-expanded', 'true');
+      status.textContent = ''; dialog.showModal();expand(false); launcher.setAttribute('aria-expanded', 'true');
     });
     dialog.addEventListener('close', () => { expand(true);launcher.setAttribute('aria-expanded', 'false'); launcher.focus(); });
     dialog.querySelector('.preferences-close').addEventListener('click', () => dialog.close());
