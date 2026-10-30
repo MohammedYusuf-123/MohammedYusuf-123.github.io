@@ -145,3 +145,11 @@ html[data-theme=dark] .tools-trigger:hover{background:var(--soft)}
 .tools-trigger{order:2}.tools-panel{order:1}
 
 html[data-theme=dark] .site-tools .tools-panel :is(button,a){background:transparent;color:var(--ink);border:0}html[data-theme=dark] .site-tools .tools-panel :is(button,a):is(:hover,:focus-visible){background:var(--soft);color:var(--ink)}
+
+/* A single icon launcher, paired with a scroll-aware return control. */
+.tools-trigger,.scroll-top{width:50px;height:50px;min-height:50px;padding:0;display:flex;align-items:center;justify-content:center;border-radius:12px}
+.scroll-top{position:fixed;right:20px;bottom:88px;z-index:39;border:1px solid var(--line);background:var(--white);color:var(--ink);box-shadow:0 4px 18px #0002;cursor:pointer}
+.scroll-top:hover{background:var(--soft)}
+.footer-top{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px}.site-footer .footer-affiliation{justify-self:end;width:100%}
+@media(max-width:600px){.scroll-top{right:12px;bottom:80px}.footer-top{grid-template-columns:minmax(0,1fr);gap:24px}}
+@media print{.scroll-top{display:none!important}}

@@ -79,24 +79,41 @@
     const themeToggle = document.createElement('button'); themeToggle.type='button';themeToggle.className='theme-toggle';
     const tools = document.createElement('div'); tools.className='site-tools';
     const trigger = document.createElement('button');trigger.type='button';trigger.className='tools-trigger';
-    trigger.innerHTML=icon('tools')+'<span>Tools</span>';trigger.setAttribute('aria-label','Site tools');trigger.setAttribute('aria-expanded','false');trigger.setAttribute('aria-controls','site-tools-panel');
+    trigger.innerHTML=icon('tools');trigger.title='Site tools';trigger.setAttribute('aria-label','Site tools');trigger.setAttribute('aria-expanded','false');trigger.setAttribute('aria-controls','site-tools-panel');
     const panel=document.createElement('div');panel.className='tools-panel';panel.id='site-tools-panel';panel.hidden=true;panel.setAttribute('role','group');panel.setAttribute('aria-label','Site tools');
     const contact=document.createElement('a');contact.href='mailto:mmujawar@crimson.ua.edu';contact.className='tools-contact';contact.innerHTML=icon('email')+'<span>Email me</span>';
     panel.append(launcher,themeToggle,contact);tools.append(trigger,panel);document.body.append(tools);
-    const expand = open => {panel.hidden=!open;trigger.setAttribute('aria-expanded',String(open));};
-    let pinned=false;
-    trigger.addEventListener('click',()=>{pinned=!pinned;expand(pinned);});
+    const backTop=document.createElement('button');backTop.type='button';backTop.className='scroll-top';backTop.setAttribute('aria-label','Back to top');backTop.title='Back to top';
+    backTop.innerHTML='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 11 6-6 6 6M12 5v14"/></svg>';
+    document.body.append(backTop);
+    const updateBackTop=()=>{backTop.hidden=window.scrollY<400||!panel.hidden;};
+    window.addEventListener('scroll',updateBackTop,{passive:true});updateBackTop();
+    backTop.addEventListener('click',()=>{
+      const reduced=settings.motion||matchMedia('(prefers-reduced-motion:reduce)').matches;
+      window.scrollTo({top:0,behavior:reduced?'instant':'smooth'});
+      document.querySelector('.brand')?.focus({preventScroll:true});
+    });
+    let clickOpen=false,keyboardInput=false;
+    const expand = open => {panel.hidden=!open;trigger.setAttribute('aria-expanded',String(open));if(!open)clickOpen=false;updateBackTop();};
+    document.addEventListener('keydown',event=>{if(['Tab','Enter',' ','ArrowDown','ArrowUp'].includes(event.key))keyboardInput=true;});
+    document.addEventListener('pointerdown',()=>{keyboardInput=false;},{passive:true});
+    tools.addEventListener('pointermove',()=>{keyboardInput=false;},{passive:true});
+    trigger.addEventListener('click',()=>{clickOpen=!clickOpen;expand(clickOpen);});
     tools.addEventListener('mouseenter',()=>{if(matchMedia('(hover:hover) and (pointer:fine)').matches)expand(true);});
-    tools.addEventListener('mouseleave',()=>{if(!pinned&&!tools.contains(document.activeElement)&&!dialog.open)expand(false);});
+    tools.addEventListener('mouseleave',()=>{
+      if(dialog.open||(keyboardInput&&tools.contains(document.activeElement)))return;
+      if(panel.contains(document.activeElement))trigger.focus();
+      expand(false);
+    });
     tools.addEventListener('focusout',()=>setTimeout(()=>{if(!tools.contains(document.activeElement)&&!dialog.open)expand(false);},0));
-    document.addEventListener('click',event=>{if(!event.composedPath().includes(tools)&&!event.composedPath().includes(dialog)&&!dialog.open){pinned=false;expand(false);}});
-    document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!dialog.open&&!panel.hidden){pinned=false;expand(false);trigger.focus();}});
-    themeToggle.addEventListener('click',()=>{settings.theme=document.documentElement.dataset.theme==='dark'?'light':'dark';apply();save();synchronize();pinned=true;expand(true);themeToggle.focus();});
+    document.addEventListener('click',event=>{if(!event.composedPath().includes(tools)&&!event.composedPath().includes(dialog)&&!event.composedPath().includes(backTop)&&!dialog.open)expand(false);});
+    document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!dialog.open&&!panel.hidden){expand(false);trigger.focus();}});
+    themeToggle.addEventListener('click',()=>{settings.theme=document.documentElement.dataset.theme==='dark'?'light':'dark';apply();save();synchronize();expand(true);themeToggle.focus();});
     apply(); synchronize();
     launcher.addEventListener('click', () => {
       status.textContent = ''; dialog.showModal(); launcher.setAttribute('aria-expanded', 'true');
     });
-    dialog.addEventListener('close', () => { pinned=true;expand(true);launcher.setAttribute('aria-expanded', 'false'); launcher.focus(); });
+    dialog.addEventListener('close', () => { expand(true);launcher.setAttribute('aria-expanded', 'false'); launcher.focus(); });
     dialog.querySelector('.preferences-close').addEventListener('click', () => dialog.close());
     dialog.querySelector('.preferences-done').addEventListener('click', () => dialog.close());
     dialog.addEventListener('change', () => {
