@@ -12,6 +12,16 @@
   });
   let settings = { ...defaults };
   try { settings = sanitize(JSON.parse(localStorage.getItem(key))); } catch (_) { /* Browser storage is optional. */ }
+  const icon = name => {
+    const paths = {
+      tools:'<path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="3"/><circle cx="15" cy="17" r="3"/>',
+      access:'<circle cx="12" cy="4" r="2"/><path d="M4 8l8 2 8-2M12 10v5m0 0l-5 6m5-6l5 6"/>',
+      moon:'<path d="M20 14A8 8 0 0 1 10 4a8.5 8.5 0 1 0 10 10Z"/>',
+      sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/>',
+      email:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/>'
+    };
+    return '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+paths[name]+'</svg>';
+  };
   const apply = () => {
     const root = document.documentElement;
     root.style.setProperty('--text-scale', String(Number(settings.textSize) / 100));
@@ -21,7 +31,7 @@
     const dark = settings.theme === 'dark' || (settings.theme === 'system' && matchMedia('(prefers-color-scheme: dark)').matches);
     root.dataset.theme = dark ? 'dark' : 'light';
     const toggle = document.querySelector('.theme-toggle');
-    if(toggle){toggle.textContent=dark?'Light mode':'Dark mode';toggle.setAttribute('aria-label',dark?'Switch to light mode':'Switch to dark mode');}
+    if(toggle){toggle.innerHTML=icon(dark?'sun':'moon')+'<span>'+(dark?'Light mode':'Dark mode')+'</span>';toggle.setAttribute('aria-label',dark?'Switch to light mode':'Switch to dark mode');}
 
   };
   apply();
@@ -35,7 +45,7 @@
   const initialize = () => {
     const launcher = document.createElement('button');
     launcher.type = 'button'; launcher.className = 'accessibility-launch';
-    launcher.textContent = 'Accessibility';
+    launcher.innerHTML = icon('access')+'<span>Accessibility</span>';
     launcher.setAttribute('aria-haspopup', 'dialog');
     launcher.setAttribute('aria-controls', 'reading-preferences');
     launcher.setAttribute('aria-expanded', 'false');
@@ -67,13 +77,26 @@
     };
     const save = () => { try { localStorage.setItem(key, JSON.stringify(settings)); } catch (_) { /* Preferences still work for this page. */ } };
     const themeToggle = document.createElement('button'); themeToggle.type='button';themeToggle.className='theme-toggle';
-    document.body.append(themeToggle);
-    themeToggle.addEventListener('click',()=>{settings.theme=document.documentElement.dataset.theme==='dark'?'light':'dark';apply();save();synchronize();});
+    const tools = document.createElement('div'); tools.className='site-tools';
+    const trigger = document.createElement('button');trigger.type='button';trigger.className='tools-trigger';
+    trigger.innerHTML=icon('tools')+'<span>Tools</span>';trigger.setAttribute('aria-label','Site tools');trigger.setAttribute('aria-expanded','false');trigger.setAttribute('aria-controls','site-tools-panel');
+    const panel=document.createElement('div');panel.className='tools-panel';panel.id='site-tools-panel';panel.hidden=true;panel.setAttribute('role','group');panel.setAttribute('aria-label','Site tools');
+    const contact=document.createElement('a');contact.href='mailto:mmujawar@crimson.ua.edu';contact.className='tools-contact';contact.innerHTML=icon('email')+'<span>Email me</span>';
+    panel.append(launcher,themeToggle,contact);tools.append(trigger,panel);document.body.append(tools);
+    const expand = open => {panel.hidden=!open;trigger.setAttribute('aria-expanded',String(open));};
+    let pinned=false;
+    trigger.addEventListener('click',()=>{pinned=!pinned;expand(pinned);});
+    tools.addEventListener('mouseenter',()=>{if(matchMedia('(hover:hover) and (pointer:fine)').matches)expand(true);});
+    tools.addEventListener('mouseleave',()=>{if(!pinned&&!tools.contains(document.activeElement)&&!dialog.open)expand(false);});
+    tools.addEventListener('focusout',()=>setTimeout(()=>{if(!tools.contains(document.activeElement)&&!dialog.open)expand(false);},0));
+    document.addEventListener('click',event=>{if(!event.composedPath().includes(tools)&&!event.composedPath().includes(dialog)&&!dialog.open){pinned=false;expand(false);}});
+    document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!dialog.open&&!panel.hidden){pinned=false;expand(false);trigger.focus();}});
+    themeToggle.addEventListener('click',()=>{settings.theme=document.documentElement.dataset.theme==='dark'?'light':'dark';apply();save();synchronize();pinned=true;expand(true);themeToggle.focus();});
     apply(); synchronize();
     launcher.addEventListener('click', () => {
       status.textContent = ''; dialog.showModal(); launcher.setAttribute('aria-expanded', 'true');
     });
-    dialog.addEventListener('close', () => { launcher.setAttribute('aria-expanded', 'false'); launcher.focus(); });
+    dialog.addEventListener('close', () => { pinned=true;expand(true);launcher.setAttribute('aria-expanded', 'false'); launcher.focus(); });
     dialog.querySelector('.preferences-close').addEventListener('click', () => dialog.close());
     dialog.querySelector('.preferences-done').addEventListener('click', () => dialog.close());
     dialog.addEventListener('change', () => {
