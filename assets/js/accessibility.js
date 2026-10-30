@@ -25,6 +25,7 @@
   const apply = () => {
     const root = document.documentElement;
     root.style.setProperty('--text-scale', String(Number(settings.textSize) / 100));
+    root.dataset.textSize = settings.textSize;
     root.dataset.contrast = settings.contrast ? 'high' : 'default';
     root.dataset.readingSpacing = settings.spacing ? 'comfortable' : 'default';
     root.dataset.reduceMotion = String(settings.motion);

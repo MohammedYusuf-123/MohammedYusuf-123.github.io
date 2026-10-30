@@ -167,3 +167,23 @@ html[data-theme=dark] .site-tools .tools-panel :is(button,a){background:transpar
 @media(max-width:600px){.monogram{font-size:calc(40px * var(--text-scale));padding-right:12px}}
 
 @media(max-width:400px){.header-inner{padding-inline:14px;gap:8px}.brand{gap:6px}.monogram{font-size:calc(50px * var(--text-scale));padding-right:8px}.menu-toggle{font-size:calc(12px * var(--text-scale));gap:5px;padding:8px 7px}}
+
+/* Review refinements: keep tablet reading columns comfortable and aligned. */
+.portrait-index{white-space:nowrap;flex-shrink:0}
+@media(min-width:601px) and (max-width:850px){
+  .demonstration-feature{align-items:start}
+  .about-layout{grid-template-columns:minmax(0,1fr);gap:32px}
+  .about-portrait{width:100%;max-width:360px;margin-inline:auto}
+  .about-copy{max-width:72ch}
+  .three-columns{grid-template-columns:minmax(0,1fr);gap:28px}
+  .three-columns>div+div{border-top:1px solid var(--line);padding-top:24px}
+  .three-columns p{max-width:72ch}
+}
+
+/* Enlarged reading text needs its own header row on compact screens. */
+@media(max-width:850px){
+  html[data-text-size]:not([data-text-size="100"]) .brand{flex:1 0 100%;width:100%}
+  html[data-text-size]:not([data-text-size="100"]) .brand-name{flex:1;min-width:0}
+  html[data-text-size]:not([data-text-size="100"]) .menu-toggle{margin-inline-start:auto}
+  html[data-text-size]:not([data-text-size="100"]) .monogram{font-size:calc(32px * var(--text-scale));flex-shrink:0}
+}
