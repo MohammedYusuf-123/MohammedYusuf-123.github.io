@@ -187,3 +187,6 @@ html[data-theme=dark] .site-tools .tools-panel :is(button,a){background:transpar
   html[data-text-size]:not([data-text-size="100"]) .menu-toggle{margin-inline-start:auto}
   html[data-text-size]:not([data-text-size="100"]) .monogram{font-size:calc(32px * var(--text-scale));flex-shrink:0}
 }
+
+/* Match the introduction label to the adjacent reading text. */
+.intro-grid{align-items:start}.intro-grid>.eyebrow{font-family:"Segoe UI",Arial,sans-serif;font-size:calc(18px * var(--text-scale));font-weight:400;text-transform:none;letter-spacing:normal;line-height:1.8}
