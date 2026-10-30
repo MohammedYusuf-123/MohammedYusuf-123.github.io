@@ -19,6 +19,12 @@
     root.dataset.reduceMotion = String(settings.motion);
   };
   apply();
+  // Skip native navigation transitions when either preference requests less motion.
+  for (const eventName of ['pageswap', 'pagereveal']) {
+    window.addEventListener(eventName, event => {
+      if (settings.motion || window.matchMedia('(prefers-reduced-motion: reduce)').matches) event.viewTransition?.skipTransition();
+    });
+  }
   const initialize = () => {
     const launcher = document.createElement('button');
     launcher.type = 'button'; launcher.className = 'accessibility-launch';

@@ -47,3 +47,16 @@ body{overflow-wrap:anywhere}.intro-grid>*,.reading-layout>*,.artifact-layout>*{m
 .accessibility-dialog{max-width:calc(100vw - 32px)}
 
 .header-inner,.header-inner nav{flex-wrap:wrap}
+
+.footer-top{grid-template-columns:minmax(0,1fr) auto}.back-top{justify-self:end}@media(max-width:600px){.footer-top{grid-template-columns:minmax(0,1fr)}.back-top{justify-self:start}}
+
+/* Progressive enhancement: ordinary links still work without View Transition support. */
+@view-transition{navigation:auto}
+@keyframes portfolio-page-in{from{opacity:0}to{opacity:1}}
+@keyframes portfolio-page-out{from{opacity:1}to{opacity:0}}
+@keyframes portfolio-item-in{from{opacity:0}to{opacity:1}}
+::view-transition-old(root){animation:portfolio-page-out 140ms ease-out both}
+::view-transition-new(root){animation:portfolio-page-in 180ms ease-out both}
+.filter-item{animation:portfolio-item-in 180ms ease-out both}
+:root[data-reduce-motion="true"]::view-transition-old(root),:root[data-reduce-motion="true"]::view-transition-new(root),:root[data-reduce-motion="true"]::view-transition-group(root){animation:none!important}
+@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root),::view-transition-group(root),.filter-item{animation:none!important}}
