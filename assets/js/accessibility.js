@@ -1,14 +1,14 @@
 (() => {
   'use strict';
   const key = 'ahe603-reading-preferences';
-  const defaults = { textSize: '100', contrast: false, spacing: false, motion: false, theme: 'system' };
+  const defaults = { textSize: '100', contrast: false, spacing: false, motion: false, theme: 'light' };
   const sizes = ['100', '125', '150', '175', '200'];
   const sanitize = value => ({
     textSize: sizes.includes(value?.textSize) ? value.textSize : '100',
     contrast: value?.contrast === true,
     spacing: value?.spacing === true,
     motion: value?.motion === true,
-    theme: ['system','light','dark'].includes(value?.theme) ? value.theme : 'system'
+    theme: ['system','light','dark'].includes(value?.theme) ? value.theme : 'light'
   });
   let settings = { ...defaults };
   try { settings = sanitize(JSON.parse(localStorage.getItem(key))); } catch (_) { /* Browser storage is optional. */ }
@@ -87,9 +87,8 @@
     const contactDialog=document.createElement('dialog');contactDialog.id='contact-details';contactDialog.className='accessibility-dialog contact-dialog';contactDialog.setAttribute('aria-labelledby','contact-title');
     contactDialog.innerHTML=`<div class="preferences-heading"><h2 id="contact-title">Contact me</h2><button class="preferences-close contact-close" type="button" aria-label="Close contact details">×</button></div>
       <p class="contact-name">Mohammed Yusuf Mujawar</p><p class="contact-affiliation">Computer Science · The University of Alabama</p>
-      <p class="contact-email-label" id="contact-email-label">Email address</p><p class="contact-email" aria-labelledby="contact-email-label">mmujawar@crimson.ua.edu</p>
-      <div class="preferences-actions"><button type="button" class="button copy-email">Copy email</button><a class="button button-light" href="mailto:mmujawar@crimson.ua.edu">Open email app</a></div>
-      <p class="contact-help">You can paste the address into any email service. Opening an email app requires a configured email account on your device.</p><p class="contact-status" role="status" aria-live="polite"></p>`;
+      <p class="contact-email-label" id="contact-email-label">Email address</p><div class="contact-email-row"><p class="contact-email" aria-labelledby="contact-email-label">mmujawar@crimson.ua.edu</p><button type="button" class="copy-email copy-email-icon" aria-label="Copy email address" title="Copy email address"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg></button></div>
+      <p class="contact-help">Copy the address and paste it into your preferred email service.</p><p class="contact-status" role="status" aria-live="polite"></p>`;
     document.body.append(contactDialog);
     const modalOpen=()=>dialog.open||contactDialog.open;
     panel.append(launcher,themeToggle,contact);tools.append(trigger,panel);document.body.append(tools);

@@ -200,3 +200,8 @@ html[data-theme=dark] .site-tools .tools-panel :is(button,a){background:transpar
 .contact-dialog .contact-help{font-size:calc(14px * var(--text-scale));color:var(--muted);margin:22px 0 12px}
 .contact-dialog .contact-status{min-height:1.8em;margin:0;font-size:calc(16px * var(--text-scale))}
 .contact-dialog .button{border-radius:8px}
+
+.contact-email-row{display:flex;align-items:center;gap:12px;margin-bottom:24px;min-width:0}
+.contact-dialog .contact-email-row .contact-email{margin:0;min-width:0}
+.copy-email-icon{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;min-width:44px;flex-shrink:0;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--ink);cursor:pointer}
+.copy-email-icon:hover{background:var(--soft)}
