@@ -153,3 +153,5 @@ html[data-theme=dark] .site-tools .tools-panel :is(button,a){background:transpar
 .footer-top{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px}.site-footer .footer-affiliation{justify-self:end;width:100%}
 @media(max-width:600px){.scroll-top{right:12px;bottom:80px}.footer-top{grid-template-columns:minmax(0,1fr);gap:24px}}
 @media print{.scroll-top{display:none!important}}
+
+@media(min-width:851px){.site-footer .footer-affiliation{text-align:right}}
