@@ -155,3 +155,9 @@ html[data-theme=dark] .site-tools .tools-panel :is(button,a){background:transpar
 @media print{.scroll-top{display:none!important}}
 
 @media(min-width:851px){.site-footer .footer-affiliation{text-align:right}}
+
+/* Keep the author identity legible beside the main navigation. */
+.brand-name{font-size:calc(15px * var(--text-scale));letter-spacing:.6px;line-height:1.4}.brand-name>span{font-size:calc(12px * var(--text-scale));letter-spacing:1.1px;margin-top:5px}
+@media(max-width:600px){.brand-name{font-size:calc(12px * var(--text-scale));letter-spacing:.25px}.brand-name>span{font-size:calc(10px * var(--text-scale));letter-spacing:.7px}.brand{min-width:0;flex:1}.brand-name{min-width:0}.header-inner{gap:12px}}
+
+@media(max-width:400px){.brand{gap:8px}.monogram{font-size:calc(26px * var(--text-scale));padding-right:10px}.menu-toggle{font-size:calc(14px * var(--text-scale));gap:8px;padding:8px 10px}}
