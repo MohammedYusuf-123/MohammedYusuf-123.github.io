@@ -190,3 +190,5 @@ html[data-theme=dark] .site-tools .tools-panel :is(button,a){background:transpar
 
 /* Match the introduction label to the adjacent reading text. */
 .intro-grid{align-items:start}.intro-grid>.eyebrow{font-family:"Segoe UI",Arial,sans-serif;font-size:calc(18px * var(--text-scale));font-weight:400;text-transform:none;letter-spacing:normal;line-height:1.8}
+
+.intro-grid>div p{font-size:calc(18px * var(--text-scale));line-height:1.8}
