@@ -50,13 +50,28 @@ body{overflow-wrap:anywhere}.intro-grid>*,.reading-layout>*,.artifact-layout>*{m
 
 .footer-top{grid-template-columns:minmax(0,1fr) auto}.back-top{justify-self:end}@media(max-width:600px){.footer-top{grid-template-columns:minmax(0,1fr)}.back-top{justify-self:start}}
 
-/* Progressive enhancement: ordinary links still work without View Transition support. */
-@view-transition{navigation:auto}
-@keyframes portfolio-page-in{from{opacity:0}to{opacity:1}}
-@keyframes portfolio-page-out{from{opacity:1}to{opacity:0}}
+/* Shared layout rhythm and clear interaction states. */
+.hero{align-items:start}.hero h1{margin:0 0 26px}.about-copy{padding-top:0}
+.about-layout{padding-block:0}.education-section{padding-bottom:0}
+.reading-layout:not(.section){padding-bottom:0}
+.header-inner nav>a{min-height:44px;display:inline-flex;align-items:center;padding:10px 12px;font-size:calc(13px * var(--text-scale));border-radius:3px}
+.header-inner nav{gap:6px}.header-inner nav>a[aria-current=page]{background:var(--sand);font-weight:650;color:var(--ink)}
+.header-inner nav>a[aria-current=page]:after{left:12px;right:12px;bottom:5px}
+.header-inner nav>a:hover{background:var(--soft)}
+.menu-toggle,.filter,.slide-controls button,.artifact-sidebar a{min-height:44px}
+.artifact-sidebar a{display:flex;align-items:center;border-left:2px solid transparent;padding-left:12px}
+.artifact-sidebar a[aria-current=location]{border-left-color:var(--accent);background:var(--soft);font-weight:600}
+.filter{border-color:var(--line);font-size:calc(12px * var(--text-scale));transition:background 160ms ease,color 160ms ease}
+.filter:hover{border-color:var(--accent)}.filter-bar{margin-bottom:16px}
+.filter-status{font-size:calc(13px * var(--text-scale));color:var(--muted);margin:0 0 24px}
+.slide-controls{flex-wrap:wrap;gap:16px}.slide-controls button{font-size:calc(13px * var(--text-scale));padding:8px 16px}
+.breadcrumb a{text-decoration:underline;text-underline-offset:4px}
+@keyframes portfolio-content-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 @keyframes portfolio-item-in{from{opacity:0}to{opacity:1}}
-::view-transition-old(root){animation:portfolio-page-out 140ms ease-out both}
-::view-transition-new(root){animation:portfolio-page-in 180ms ease-out both}
-.filter-item{animation:portfolio-item-in 180ms ease-out both}
-:root[data-reduce-motion="true"]::view-transition-old(root),:root[data-reduce-motion="true"]::view-transition-new(root),:root[data-reduce-motion="true"]::view-transition-group(root){animation:none!important}
-@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root),::view-transition-group(root),.filter-item{animation:none!important}}
+main{animation:portfolio-content-in 280ms ease-out both}
+.filter-item,.slide-panel:not([hidden]){animation:portfolio-item-in 220ms ease-out both}
+.header-inner nav>a,.text-link{transition:background 160ms ease,color 160ms ease}
+@media(max-width:850px){.header-inner nav>a{padding:12px}.header-inner nav{gap:4px}}
+@media(max-width:600px){.hero h1{margin-top:0}.artifact-sidebar{gap:4px 12px}.artifact-sidebar a{padding:6px 10px}.filter{font-size:calc(12px * var(--text-scale))}.slide-controls{gap:10px}}
+@media(prefers-reduced-motion:reduce){main,.filter-item,.slide-panel{animation:none!important}}
+@media print{.header-inner nav>a{padding:0}main{animation:none}}

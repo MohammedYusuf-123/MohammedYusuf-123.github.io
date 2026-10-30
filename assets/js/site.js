@@ -47,8 +47,22 @@ if (mount && video?.src) {
       if (video.captions) { const track = document.createElement('track'); track.kind='captions'; track.srclang='en'; track.label='English'; track.src=video.captions; track.default=true; element.append(track); }
     }
     mount.replaceChildren(element);
-    const fallback = document.createElement('a'); fallback.className='text-link'; fallback.href=source.href; fallback.textContent='Open recording directly ↗'; mount.append(fallback);
-    if (video.transcript) { const t=document.createElement('a'); t.href=video.transcript; t.textContent='Read transcript →'; t.className='text-link'; mount.append(t); }
-    document.querySelectorAll('.feature-copy .caption').forEach(label => label.textContent='11 slides · Recorded presentation');
+    const fallback = document.createElement('a'); fallback.className='text-link'; fallback.href=source.href; fallback.textContent='Open recording directly â†—'; mount.append(fallback);
+    if (video.transcript) { const t=document.createElement('a'); t.href=video.transcript; t.textContent='Read transcript â†’'; t.className='text-link'; mount.append(t); }
+    document.querySelectorAll('.feature-copy .caption').forEach(label => label.textContent='11 slides Â· Recorded presentation');
   }
+}
+
+// Mark the section currently being read without changing keyboard focus.
+const sectionLinks = [...document.querySelectorAll('.artifact-sidebar a[href^="#"]')];
+if (sectionLinks.length && 'IntersectionObserver' in window) {
+  const observer = new IntersectionObserver(entries => {
+    const visible = entries.filter(entry => entry.isIntersecting).sort((a,b) => a.boundingClientRect.top - b.boundingClientRect.top);
+    if (!visible.length) return;
+    sectionLinks.forEach(link => {
+      if (link.hash === '#' + visible[0].target.id) link.setAttribute('aria-current','location');
+      else link.removeAttribute('aria-current');
+    });
+  }, {rootMargin:'-10% 0px -50% 0px',threshold:0});
+  sectionLinks.forEach(link => {const section=document.getElementById(link.hash.slice(1));if(section) observer.observe(section);});
 }
