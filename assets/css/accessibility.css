@@ -168,7 +168,7 @@ html[data-theme=dark] .site-tools .tools-panel :is(button,a){background:transpar
 
 @media(max-width:400px){.header-inner{padding-inline:14px;gap:8px}.brand{gap:6px}.monogram{font-size:calc(50px * var(--text-scale));padding-right:8px}.menu-toggle{font-size:calc(12px * var(--text-scale));gap:5px;padding:8px 7px}}
 
-/* Review refinements: keep tablet reading columns comfortable and aligned. */
+/* Tablet reading layout. */
 .portrait-index{white-space:nowrap;flex-shrink:0}
 @media(min-width:601px) and (max-width:850px){
   .demonstration-feature{align-items:start}
