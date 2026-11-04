@@ -34,25 +34,6 @@ if (viewer) {
   prev.addEventListener('click', () => show(index-1)); next.addEventListener('click', () => show(index+1));
   viewer.addEventListener('keydown', event => { if (event.key === 'ArrowLeft') { event.preventDefault(); show(index-1); } if (event.key === 'ArrowRight') { event.preventDefault(); show(index+1); } });
 }
-const video = window.PORTFOLIO_VIDEO;
-const mount = document.querySelector('#video-mount');
-if (mount && video?.src) {
-  const source = new URL(video.src,window.location.href);
-  if (['http:','https:','file:'].includes(source.protocol)) {
-    const element = document.createElement(video.type === 'embed' ? 'iframe' : 'video');
-    element.src = source.href;
-    if (video.type === 'embed') { element.title = video.title; element.allowFullscreen = true; element.loading = 'lazy'; element.allow = 'fullscreen; picture-in-picture'; }
-    else {
-      element.controls = true; element.preload = 'metadata'; element.setAttribute('aria-label',video.title);
-      if (video.captions) { const track = document.createElement('track'); track.kind='captions'; track.srclang='en'; track.label='English'; track.src=video.captions; track.default=true; element.append(track); }
-    }
-    mount.replaceChildren(element);
-    const fallback = document.createElement('a'); fallback.className='text-link'; fallback.href=source.href; fallback.textContent='Open recording directly â†—'; mount.append(fallback);
-    if (video.transcript) { const t=document.createElement('a'); t.href=video.transcript; t.textContent='Read transcript â†’'; t.className='text-link'; mount.append(t); }
-    document.querySelectorAll('.feature-copy .caption').forEach(label => label.textContent='11 slides Â· Recorded presentation');
-  }
-}
-
 // Mark the section currently being read without changing keyboard focus.
 const sectionLinks = [...document.querySelectorAll('.artifact-sidebar a[href^="#"]')];
 if (sectionLinks.length && 'IntersectionObserver' in window) {

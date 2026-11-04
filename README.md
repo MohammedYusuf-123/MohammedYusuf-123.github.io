@@ -1,6 +1,6 @@
 # Mohammed Yusuf Mujawar — Teaching Portfolio
 
-Personal teaching portfolio featuring my teaching philosophy, educational background, teaching materials, demonstration slides, and reflections.
+Personal teaching portfolio featuring my teaching philosophy, educational background, teaching materials, demonstration slides and video, and reflections.
 
 [Visit the portfolio](https://mohammedyusuf-123.github.io/)
 
