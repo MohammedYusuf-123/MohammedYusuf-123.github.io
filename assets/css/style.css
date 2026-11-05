@@ -37,5 +37,7 @@
 }
 .artifact-body .class-schedule p {
   margin-bottom: 0;
-  text-align: start;
+  text-align: justify;
+  text-align-last: start;
+  hyphens: auto;
 }
