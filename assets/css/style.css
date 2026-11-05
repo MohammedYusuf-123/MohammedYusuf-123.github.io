@@ -12,3 +12,30 @@
 .demonstration-links{display:flex;align-items:center;flex-wrap:wrap;gap:16px 28px;padding-bottom:20px}.video-mount video{aspect-ratio:1668/1080;height:auto;object-fit:contain}
 
 .growth-reading-layout{grid-template-columns:minmax(280px,300px) minmax(0,1fr);gap:55px}.growth-summary>span{display:block}html:not([data-text-size]),html[data-text-size="100"]{--summary-wrap:nowrap}.growth-summary>span{white-space:var(--summary-wrap,normal)}@media(max-width:850px){.growth-reading-layout{grid-template-columns:1fr;gap:30px}}
+
+.class-schedule {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: 1rem;
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+}
+.class-schedule > li {
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--accent);
+  padding: 1rem;
+}
+.class-schedule .schedule-time {
+  display: block;
+  margin: .35rem 0 .8rem;
+  color: var(--muted);
+}
+.class-schedule h3 {
+  margin-bottom: .65rem;
+}
+.artifact-body .class-schedule p {
+  margin-bottom: 0;
+  text-align: start;
+}
