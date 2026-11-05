@@ -125,7 +125,7 @@ table,td,th,.preferences-field label,.preferences-toggle,.accessibility-dialog p
 
 /* Paragraph alignment and a compact, keyboard-accessible utility disclosure. */
 main p{text-align:justify;text-align-last:start;hyphens:manual}
-main :is(.caption,.filter-status,.education-date,.hero-lead,.notice){text-align:start;hyphens:none}
+main :is(.caption,.filter-status,.education-date,.hero-lead,.notice,.reading-aside>p){text-align:start;hyphens:none}
 .footer-top{grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;align-items:start;gap:35px}
 .site-footer .footer-affiliation{margin:0;padding-top:0;max-width:470px;text-align:start}
 .footer-affiliation .divider{display:none}.footer-affiliation>span:not(.divider){display:block}.footer-affiliation>span+span{margin-top:6px}
