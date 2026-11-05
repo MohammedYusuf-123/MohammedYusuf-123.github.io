@@ -205,3 +205,5 @@ html[data-theme=dark] .site-tools .tools-panel :is(button,a){background:transpar
 .contact-dialog .contact-email-row .contact-email{margin:0;min-width:0}
 .copy-email-icon{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;min-width:44px;flex-shrink:0;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--ink);cursor:pointer}
 .copy-email-icon:hover{background:var(--soft)}
+
+@media(max-width:850px){.container.growth-reading-layout{grid-template-columns:1fr;gap:30px}}@media(max-width:360px){.reading-aside>.growth-summary{font-size:calc(22px * var(--text-scale,1))}}

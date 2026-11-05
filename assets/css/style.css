@@ -10,3 +10,5 @@
 .download-links{display:flex;gap:22px;flex-wrap:wrap;align-items:center}.download-links .text-link{white-space:nowrap}
 
 .demonstration-links{display:flex;align-items:center;flex-wrap:wrap;gap:16px 28px;padding-bottom:20px}.video-mount video{aspect-ratio:1668/1080;height:auto;object-fit:contain}
+
+.growth-reading-layout{grid-template-columns:minmax(280px,300px) minmax(0,1fr);gap:55px}.growth-summary>span{display:block}html:not([data-text-size]),html[data-text-size="100"]{--summary-wrap:nowrap}.growth-summary>span{white-space:var(--summary-wrap,normal)}@media(max-width:850px){.growth-reading-layout{grid-template-columns:1fr;gap:30px}}
